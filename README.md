@@ -2,8 +2,6 @@ i3D OpenWebGlobe SDK WebViewer
 ==============================
 
 With the OpenWebGlobe SDK you can create your own virtual globe applications.
-You can develop your new application in your favorite language like C++, C#,
-Visual Basic, Python.
 
 The WebGL Viewer is a port of the OpenWebGlobe SDK to Javascript/WebGL.
 This is the precompiled version for end users.
@@ -11,9 +9,7 @@ This is the precompiled version for end users.
 OpenWebGlobe SDK is created by the Geomatics Engineering departement at the
 University of Applied Sciences Northwestern Switzerland.
 
-http://wiki.openwebglobe.org/doku.php?id=webgl
-
-
+http://www.openwebglobe.org/
 
 Getting started
 ===============
