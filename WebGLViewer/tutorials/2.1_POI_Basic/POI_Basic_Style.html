@@ -34,7 +34,7 @@
 
 <title>Create basic POIs </title>
 
-<script type="text/javascript" src="../../openwebglobe_0.5.3.js"></script>
+<script type="text/javascript" src="../../openwebglobe_0.7.3.js"></script>
 
 <script type="text/javascript">
 
@@ -68,7 +68,7 @@ function OnMouseDown(context, button, mx, my)
       // place poi:
       var NewPoiDefinition = 
       {
-         icon     : "cycling.png",
+         icon     : "http://www.openwebglobe.org/art/cycling.png",
          text 	  : "Position: (" + result[1].toFixed(3) + ", " + result[2].toFixed(3) + ", " + result[3].toFixed(0) + ")",
          position : [result[1], result[2], result[3]+2000],
          size 	  : 20,
@@ -103,6 +103,10 @@ function OnKeyDown(ctx, keycode)
 //------------------------------------------------------------------------------
 function main()
 {
+   // (0) Set location of Artwork directory. Because of CORS this can't be local
+   // if you want to open this using file://...
+   ogSetArtworkDirectory("http://www.openwebglobe.org/art/");
+   
    // (1) create an OpenWebGlobe context using canvas
    // first parameter is canvas-id and second is "fullscreen"
    var ctx = ogCreateContextFromCanvas("canvas", true);
@@ -167,7 +171,7 @@ function main()
     var PoiDefinitionWithIcon =
    {
       text     :  "Airport",
-      icon     :  "airport.png",
+      icon     :  "http://www.openwebglobe.org/art/airport.png",
 	  position :  [7.72, 46.71, 2000],
 	  size 	   :  80,
       flagpole :  false

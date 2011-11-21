@@ -34,7 +34,7 @@
 
 <title>Visibility Distance</title>
 
-<script type="text/javascript" src="../../openwebglobe_0.5.3.js"></script>
+<script type="text/javascript" src="../../openwebglobe_0.7.3.js"></script>
 
 <script type="text/javascript">
 
@@ -63,7 +63,7 @@ function OnMouseDown(context, button, mx, my)
       // place poi:
       var NewPoiDefinition = 
       {
-         icon     : "cycling.png",
+         icon     : "http://www.openwebglobe.org/art/cycling.png",
          position :  [result[1], result[2], result[3]+2000],
          size 	  : 	50,
          visibilityRange : [10,100] //visibility range in km!
@@ -76,6 +76,10 @@ function OnMouseDown(context, button, mx, my)
 //------------------------------------------------------------------------------
 function main()
 {
+   // (0) Set location of Artwork directory. Because of CORS this can't be local
+   // if you want to open this using file://...
+   ogSetArtworkDirectory("http://www.openwebglobe.org/art/");
+   
    // (1) create an OpenWebGlobe context using canvas
    // first parameter is canvas-id and second is "fullscreen"
    var ctx = ogCreateContextFromCanvas("canvas", true);
