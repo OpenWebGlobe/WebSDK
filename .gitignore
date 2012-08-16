@@ -1,0 +1,7 @@
+# editors
+/OpenWebGlobe.komodoproject
+/.komodotools
+/.idea
+
+# MacOS
+.DS_Store
