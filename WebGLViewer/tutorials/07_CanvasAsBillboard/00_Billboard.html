@@ -161,6 +161,9 @@ function main()
    //Create the Billboard from canvas
 
    billboard_id = ogCreateBillboardFromCanvas(billboardlayer,a,7.569964,46.135222,9735);
+
+   var scene = ogGetScene(ctx);
+   ogFlyToLookAtPosition(scene,7.569964,46.135222,10000,1000);
    
 }
 //------------------------------------------------------------------------------
