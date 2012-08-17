@@ -23,7 +23,8 @@
 *     Licensed under MIT License. Read the file LICENSE for more information   *
 *******************************************************************************/
 
-                  TUTORIAL 7.2: Playing Video in a billboard object
+                     TUTORIAL 4.8: Setting Pivot Point
+
 *******************************************************************************/
 -->
 <html lang="en">
@@ -33,36 +34,60 @@
 
 <script type="text/javascript">
 
-var billboard_id;
-var billboardlayer;
-var video = null;
-
-
+//------------------------------------------------------------------------------
+var bycicleLayer;
 
 //------------------------------------------------------------------------------
-// called every frame:
+// Render-Event: called every frame:
 function OnRender(context)
-{
-   // important: we need this to update the video billboard.
-   ogUpdateBillboard(billboard_id,video);
+{  
+   ogSetTextColor(context, 0,1,0);
+   ogDrawText(context, "Click middle mouse button to add a POI", 0, 80);
+   ogDrawText(context, "Press '1' to hide the new POIs",0,50);
+   ogDrawText(context, "Press '2' to show the hidden POIs",0,20);
 }
-
 //------------------------------------------------------------------------------
 // Mouse-Down-Event: Called when a mouse button is pressed
 function OnMouseDown(context, button, mx, my)
 {
-
    // retrieve the scene attached to context:
    var scene = ogGetScene(context);
-   var coors = ogPickBillboard(scene,mx,my);
    
-   if(coors)
+   // call the pickglobe function, this gives the result in lng, lat, elv
+   var result = ogPickGlobe(scene, mx, my);
+   if (button == 1 && result[0])
    {
-      console.log(" x: "+coors.x+" y: "+coors.y);
+      // place poi:
+      var NewPoiDefinition = 
+      {
+         icon     : "http://www.openwebglobe.org/data/media/cycling.png",
+         text 		: 	"Position: (" + result[1].toFixed(3) + ", " + result[2].toFixed(3) + ", " + result[3].toFixed(0) + ")",
+         position :  [result[1], result[2], result[3]+2000],
+         size 		: 	20,
+         flagpole : true,
+		 centerOnIcon : true,
+		 pivotPoint : [1,0,0]
+      };
+      
+      var poi = ogCreatePOI(bycicleLayer,NewPoiDefinition);
+   }
+}
+//------------------------------------------------------------------------------
+// Key down callback function.
+function OnKeyDown(ctx, keycode)
+{
+   if ( keycode == 49) // '1' was pressed
+   {
+      //hide the bycicle poi layer
+      ogHidePOILayer(bycicleLayer);
+   }
+   if ( keycode == 50) // '2' was pressed
+   {
+      //show the bycicle poi layer
+      ogShowPOILayer(bycicleLayer);
    }
    
 }
-
 //------------------------------------------------------------------------------
 function main()
 {
@@ -78,7 +103,6 @@ function main()
    var globe = ogCreateGlobe(ctx);
    
    // (3) Add an image and an elevation layer
-   
    var imgBlueMarble500 = 
    {
       url     : ["http://www.openwebglobe.org/data/img"],
@@ -95,39 +119,62 @@ function main()
    
    ogAddImageLayer(globe, imgBlueMarble500);
    ogAddElevationLayer(globe, elvSRTM_CH);
+   
 
    // (4) Set the "Render-Callback" function.
    // The callback function will be called everytime a frame is drawn.
    ogSetRenderFunction(ctx, OnRender);
    
-   // (5) Set the background color
-   ogSetBackgroundColor(ctx, 0.2,0.2,0.7,1);
-   
-   // (6) Set the mouse down function. We need this for picking!
+   // (5) Set the mouse down function. We need this for picking!
    ogSetMouseDownFunction(ctx, OnMouseDown);
    
-   // (7) get the scenen
+   // (6) Set the key down callback function
+   ogSetKeyDownFunction(ctx, OnKeyDown);
+   
+   // (7) Set the background color
+   ogSetBackgroundColor(ctx, 0.2,0.2,0.7,1);
+   
+   // (8) Create a POI-Layer
+   // first, we need to retrieve the scene and the world:
    var scene = ogGetScene(ctx);
-   
-   // (8) create the Billboard Layer
    var world = ogGetWorld(scene);
-   billboardlayer = ogCreateBillboardLayer(world,"billboards");
    
+	
+   // Create the poi layer
+   var poilayer = ogCreatePOILayer(world,"misc");
    
-   //(9)  create the HTML5 Video element
-   video = document.createElement('video');
-   video.controls = false;   
-   video.src = "video.ogv"; //set your ogv video here...
-   video.autoplay="true";
+   // (8.1) let's define a poi with text:
+	var PoiDefinition = 
+	{
+		text 		: 	"Hello World! 世界你好",
+		position :  [7.66, 46.13, 6000],
+		size 		: 	50,
+        flagpole :  true,
+		pivotPoint : [0,2,0]	// Hover a 1x the text width above the pole
+	};
+	
+   // (8.2) then create the POI and add to the scene:
+	var poi = ogCreatePOI(poilayer, PoiDefinition);
    
-   //when the video is loaded create a billboard.
-   video.onloadeddata = function()
-                  {
-                     billboard_id = ogCreateBillboardFromCanvas(billboardlayer,video,7.569964,46.135222,5735);
-                  }
-  
-}
+   // (8.3) let's create a poi with text and and icon. (text is optional)
+   var PoiDefinitionWithIcon =
+   {
+      text     :  "Airport",
+      icon     :  "http://www.openwebglobe.org/data/media/airport.png",
+      position :  [7.72, 46.71, 2000],
+      size     :  80,
+      flagpole :  true,
+	  pivotPoint : [-1,1,0]		// Entire POI to the left of the pole
+   };
+   
+   // (8.4) then create and add it to the scene
+   ogCreatePOI(poilayer, PoiDefinitionWithIcon);
+   
+   // Create another poi layer to place poi's interactive
+   bycicleLayer = ogCreatePOILayer(world,"byciclelayer");
 
+
+}
 //------------------------------------------------------------------------------
    
 </script>
@@ -135,7 +182,7 @@ function main()
 </head>
 <body onload="main()" style="padding:0px; margin:0px; overflow:hidden;">
    <div style="text-align: center">
-   <canvas id="canvas"></canvas>
+   <canvas id="canvas"></canvas>          
    </div>
 </body>
 </html>

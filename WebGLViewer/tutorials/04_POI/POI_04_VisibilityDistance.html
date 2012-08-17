@@ -23,7 +23,7 @@
 *     Licensed under MIT License. Read the file LICENSE for more information   *
 *******************************************************************************/
 
-                      TUTORIAL 5.4: Visibility distance
+                      TUTORIAL 4.4: Visibility distance
                       
 *******************************************************************************/
 -->
@@ -57,7 +57,7 @@ function OnMouseDown(context, button, mx, my)
    if(pickedPoiId > 0)
    {
       // change poi icon
-      ogChangePOIIcon(pickedPoiId,"http://google-maps-icons.googlecode.com/files/water.png");
+      ogChangePOIIcon(pickedPoiId,"http://www.openwebglobe.org/data/media/airport.png");
    }
    
    // call the pickglobe function, this gives the result in lng, lat, elv
@@ -67,7 +67,7 @@ function OnMouseDown(context, button, mx, my)
       // place poi:
       var NewPoiDefinition = 
       {
-         icon     : "http://google-maps-icons.googlecode.com/files/cycling.png",
+         icon     : "http://www.openwebglobe.org/data/media/cycling.png",
          position :  [result[1], result[2], result[3]+2000],
          size 		: 	50,
          visibilityRange : [10,100] //visibility range in km!
